@@ -1,6 +1,6 @@
 from .graph_writer import write_graph
 
-from ..bgp_as import BGPAS
+from ...bgp_as import BGPAS
 
 
 # tmp_path is a pytest fixture

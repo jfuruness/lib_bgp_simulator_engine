@@ -1,10 +1,10 @@
-from .default_enums import ASNs, ASTypes, Timestamps, Prefixes
-from .subprefix_hijack_defaults import subprefix_hijack_announcements
-from .subprefix_hijack_defaults import SubprefixHijackLocalRib as SubHjLocalRib
+from ..defaults import ASNs
+from ..defaults import ASTypes
+from ..defaults import subprefix_hijack_announcements
+from ..defaults import HijackLocalRib
 
 
-from ..announcement import Announcement
-from ..bgp_as import BGPAS
+from ...bgp_as import BGPAS
 
 
 def test_hidden_hijack_bgp(tmp_path):
@@ -30,13 +30,13 @@ def test_hidden_hijack_bgp(tmp_path):
 
     # Local RIB data
     local_ribs = {
-        1: SubHjLocalRib(vic_as_path=[1, 2, ASNs.VICTIM.value])
-        2: SubHjLocalRib(vic_as_path=[2, ASNs.VICTIM.value],
-                                   atk_as_path=[2, 3, ASNs.ATTACKER.value])
-        3: SubHjLocalRib(vic_as_path=[3, 2, ASNs.VICTIM.value],
-                                   atk_as_path=[3, ASNs.ATTACKER.value])
-        ASNs.VICTIM.value: SubHjLocalRib(vic_as_path=[ASNs.VICTIM.value])
-        ASNs.ATTACKER.value: SubHjLocalRib(vic_as_path=[ASNs.VICTIM.value])
+        1: HijackLocalRib(prefix_as_path=(1, 2, ASNs.VICTIM.value)),
+        2: HijackLocalRib(prefix_as_path=(2, ASNs.VICTIM.value),
+                          subprefix_as_path=(2, 3, ASNs.ATTACKER.value)),
+        3: HijackLocalRib(prefix_as_path=(3, 2, ASNs.VICTIM.value),
+                          subprefix_as_path=(3, ASNs.ATTACKER.value)),
+        ASNs.VICTIM.value: HijackLocalRib(prefix_as_path=(ASNs.VICTIM.value,)),
+        ASNs.ATTACKER.value: HijackLocalRib(subprefix_as_path=(ASNs.VICTIM.value,)),
     }
 
     run_example(tmp_path,
