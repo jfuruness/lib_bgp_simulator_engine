@@ -2,19 +2,19 @@ class AS:
     """Autonomous System class. Contains attributes of an AS"""
 
     def __init__(self,
-                 asn: int,
-                 rank: int
-                 peers=list(),
-                 customers=list(),
-                 providers=list(),
+                 asn: int = None,
+                 rank: int = None,
+                 peer_asns=list(),
+                 customer_asns=list(),
+                 provider_asns=list(),
                  input_clique=False,
                  ixp=False):
         self.asn: int = asn
         # Rank of that AS. Not to be confused with AS rank
         self.rank: int = rank
-        self.peers: list = peers
-        self.customers: list = customers
-        self.providers: list = providers
+        self.peers: list = peer_asns
+        self.customers: list = customer_asns
+        self.providers: list = provider_asns
         # Caida says that there is a known clique at the top of the AS graph
         self.input_clique: bool = input_clique
         # Caida hand selects a few IXPs
