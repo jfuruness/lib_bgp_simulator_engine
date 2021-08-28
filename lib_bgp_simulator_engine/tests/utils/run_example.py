@@ -20,4 +20,4 @@ def run_example(tmp_path,
     engine = SimulatorEngine(str(path), as_classes_dict)
     engine.run(announcements, clear=False)
     for as_obj in engine:
-        assert as_obj.local_rib.assert_eq(lobal_ribs[as_obj.asn])
+        assert as_obj.local_rib.assert_eq(local_ribs[as_obj.asn])

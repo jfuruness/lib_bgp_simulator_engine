@@ -1,3 +1,5 @@
+from .local_rib import LocalRib
+
 class AS:
     """Autonomous System class. Contains attributes of an AS"""
 
@@ -8,7 +10,8 @@ class AS:
                  customer_asns=list(),
                  provider_asns=list(),
                  input_clique=False,
-                 ixp=False):
+                 ixp=False,
+                 **kwargs):
         self.asn: int = asn
         # Rank of that AS. Not to be confused with AS rank
         self.rank: int = rank
@@ -19,6 +22,7 @@ class AS:
         self.input_clique: bool = input_clique
         # Caida hand selects a few IXPs
         self.ixp: bool = ixp
+        self.local_rib = LocalRib()
         assert hasattr(self, "process_announcements")
         assert hasattr(self, "send_announcements")
 

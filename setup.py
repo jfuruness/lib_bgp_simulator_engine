@@ -22,6 +22,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'pandas',
+        'pytest',
     ],
     classifiers=[
         'Environment :: Console',

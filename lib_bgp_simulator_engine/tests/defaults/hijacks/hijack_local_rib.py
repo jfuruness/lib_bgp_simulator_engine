@@ -26,4 +26,5 @@ class HijackLocalRib(LocalRib):
         if subprefix_as_path:
             anns.append(SubprefixHijackAtkAnn(as_path=subprefix_as_path))
 
-        self.prefix_ann_dict = {ann.prefix: ann for ann in anns}
+        for ann in anns:
+            self[ann.prefix] = ann

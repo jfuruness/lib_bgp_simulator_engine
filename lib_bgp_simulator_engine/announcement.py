@@ -21,7 +21,7 @@ class Announcement:
         never have to worry about overlapping announcements
         """
 
-        as_dict[self.origin].prefix_anns_dict[self.prefix] = self
+        as_dict[self.origin].local_rib[self.prefix] = self
 
     def __eq__(self, other):
         """Checks if two announcements are equal"""
