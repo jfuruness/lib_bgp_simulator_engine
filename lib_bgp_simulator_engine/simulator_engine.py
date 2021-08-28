@@ -25,7 +25,7 @@ class SimulatorEngine(BGPDAG):
             # Let the announcement do the seeding
             # That way it's easy for anns to seed with path manipulation
             # Simply inherit the announcement class
-            ann.seed(self)
+            ann.seed(self.as_dict)
             prefix_origins.append((ann.prefix, ann.origin))
 
         msg = "You should never have overlapping prefix origin pairs"

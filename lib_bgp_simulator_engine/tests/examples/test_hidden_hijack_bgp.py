@@ -1,7 +1,8 @@
 from ..defaults import ASNs
 from ..defaults import ASTypes
-from ..defaults import subprefix_hijack_announcements
+from ..defaults import subprefix_hijack_anns
 from ..defaults import HijackLocalRib
+from ..utils import run_example, PeerLink, CustomerProviderLink as CPLink
 
 
 from ...bgp_as import BGPAS
@@ -9,6 +10,7 @@ from ...bgp_as import BGPAS
 
 def test_hidden_hijack_bgp(tmp_path):
     r"""Hidden hijack example with BGP
+    Figure 1a in our ROV++ paper
 
         1
          \
@@ -18,13 +20,13 @@ def test_hidden_hijack_bgp(tmp_path):
     """
 
     # Graph data
-    peers = [[2, 3]]
-    customer_providers = [[1, 2],
-                          [2, ASNs.VICTIM.value],
-                          [3, ASNs.ATTACKER.value]]
+    peers = [PeerLink(2, 3)]
+    customer_providers = [CPLink(customer=1, provider=2),
+                          CPLink(customer=2, provider=ASNs.VICTIM.value),
+                          CPLink(customer=3, provider=ASNs.ATTACKER.value)]
     # Number identifying the type of AS class
     as_types = {asn: ASTypes.BGP.value for asn in
-                list(range(1, 4)) + [ASNs.VICTIM, ASNs.ATTACKER]}
+                list(range(1, 4)) + [ASNs.VICTIM.value, ASNs.ATTACKER.value]}
     # Convert number back to AS class
     as_classes_dict = {ASTypes.BGP.value: BGPAS}
 
@@ -44,5 +46,5 @@ def test_hidden_hijack_bgp(tmp_path):
                 customer_providers=customer_providers,
                 as_types=as_types,
                 as_classes_dict=as_classes_dict,
-                announcements=subprefix_hijack_announcements,
+                announcements=subprefix_hijack_anns,
                 local_ribs=local_ribs)

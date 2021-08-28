@@ -9,4 +9,4 @@ from .hijacks import PrefixHijackVicAnn
 from .hijacks import SubprefixHijackAtkAnn
 from .hijacks import SuperprefixHijackAtkAnn
 from .hijacks import HijackLocalRib
-from .enum import ASTypes, Timestamps, Prefixes, ASNs
+from .enums import ASTypes, Timestamps, Prefixes, ASNs

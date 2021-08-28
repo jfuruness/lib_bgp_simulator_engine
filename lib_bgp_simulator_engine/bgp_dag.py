@@ -1,3 +1,7 @@
+import csv
+
+import pandas as pd
+
 from .base_as import AS
 from .bgp_as import BGPAS
 
@@ -21,7 +25,7 @@ class BGPDAG:
         """Reads in the relationships data"""
 
         with open(tsv_path, "r") as f:
-            return list(csv.DictReader(f, delimiter="\t"))
+            return list(pd.read_csv(f, delimiter="\t").itertuples())
 
     def _populate_as_dict(self, rows: list, as_classes_dict: dict):
         """Populates AS dict and gets the max rank"""
@@ -32,7 +36,7 @@ class BGPDAG:
         for row in rows:
             try:
                 # Type of AS that this AS is
-                ASCls = as_classes_dict[row["as_type"]]
+                ASCls = as_classes_dict[row.as_type]
                 assert isinstance(ASCls, AS), "Improper AS type"
             # If the type of AS doesn't exist in the as dict
             except IndexError as e:
@@ -40,8 +44,8 @@ class BGPDAG:
                 logging.error(msg)
                 raise e
 
-            as_dict[row["asn"]] = ASCls(**row)
-            max_rank = max_rank if row["rank"] <= max_rank else row["rank"]
+            as_dict[row.asn] = ASCls(**row.to_dict())
+            max_rank = max_rank if row.rank <= max_rank else row.rank
         return as_dict, max_rank
         
     def _convert_relationships_to_references(self):
