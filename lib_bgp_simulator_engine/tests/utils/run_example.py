@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from .graph_writer import write_graph
 
 from ...bgp_as import BGPAS
@@ -18,10 +20,13 @@ def run_example(tmp_path,
     path = tmp_path / "example.tsv"
     write_graph(peers, customer_providers, as_types, path)
     print("populating engine")
+    start = datetime.now()
     engine = SimulatorEngine(str(path), as_classes_dict)
+    print((start-datetime.now()).total_seconds())
     print("Running engine")
+    start = datetime.now()
     engine.run(announcements, clear=False)
-    input("Done")
+    input((start-datetime.now()).total_seconds())
     for as_obj in engine:
         print("ASN:", as_obj.asn)
         for prefix, ann in as_obj.local_rib.items():

@@ -1,6 +1,7 @@
 import csv
 
 import pandas as pd
+from tqdm import tqdm
 
 from .base_as import AS
 from .bgp_as import BGPAS
@@ -18,7 +19,7 @@ class BGPDAG:
         rows = self._read_relationships(tsv_path)
         self.as_dict, max_rank = self._populate_as_dict(rows, as_classes_dict)
         self._convert_relationships_to_references()
-        self._assert_dag()
+        #self._assert_dag()
         self.ranks: tuple = self._get_ranks(max_rank)
 
     def _read_relationships(self, tsv_path):
@@ -33,7 +34,7 @@ class BGPDAG:
         max_rank = 0
         as_dict = dict()
         # populates AS dict
-        for row in rows:
+        for row in tqdm(rows, total=len(rows), desc="Reading rels"):
             for k, v in row.items():
                 # Done to convert strings of lists and ints to proper types
                 # Not technically safe, but it's from our own scripts

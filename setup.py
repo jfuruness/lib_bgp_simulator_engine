@@ -23,6 +23,7 @@ setup(
     install_requires=[
         'pandas',
         'pytest',
+        'tqdm',
     ],
     classifiers=[
         'Environment :: Console',

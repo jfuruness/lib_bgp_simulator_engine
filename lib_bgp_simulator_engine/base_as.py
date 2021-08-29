@@ -8,7 +8,8 @@ class AS:
     __slots__ = ["asn", "rank", Relationships.PEERS.name.lower(),
                  Relationships.CUSTOMERS.name.lower(),
                  Relationships.PROVIDERS.name.lower(),
-                 "ixp", "local_rib", "incoming_anns"]
+                 "ixp", "local_rib", "incoming_anns",
+                 "input_clique"]
 
     def __init__(self,
                  asn: int = None,

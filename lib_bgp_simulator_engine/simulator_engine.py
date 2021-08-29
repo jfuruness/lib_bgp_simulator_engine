@@ -47,6 +47,8 @@ class SimulatorEngine(BGPDAG):
         """Propogates announcements"""
 
         for i, rank in enumerate(self.ranks):
+
+            print(f"propogating up with rank {i}/{len(self.ranks)} of len {len(rank)}")
             # Nothing to process at the start
             if i > 0:
                 # Process first because maybe it recv from lower ranks
@@ -67,6 +69,7 @@ class SimulatorEngine(BGPDAG):
 
 
         for i, rank in enumerate(reversed(self.ranks)):
+            print(f"propogating down with rank {len(self.ranks) -i}/{len(self.ranks)}")
             # There are no incomming Anns at the top
             if i > 0:
                 for as_obj in rank:
