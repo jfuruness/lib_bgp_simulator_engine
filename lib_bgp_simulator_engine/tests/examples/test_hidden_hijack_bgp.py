@@ -21,9 +21,9 @@ def test_hidden_hijack_bgp(tmp_path):
 
     # Graph data
     peers = [PeerLink(2, 3)]
-    customer_providers = [CPLink(customer=1, provider=2),
-                          CPLink(customer=2, provider=ASNs.VICTIM.value),
-                          CPLink(customer=3, provider=ASNs.ATTACKER.value)]
+    customer_providers = [CPLink(provider=1, customer=2),
+                          CPLink(provider=2, customer=ASNs.VICTIM.value),
+                          CPLink(provider=3, customer=ASNs.ATTACKER.value)]
     # Number identifying the type of AS class
     as_types = {asn: ASTypes.BGP.value for asn in
                 list(range(1, 4)) + [ASNs.VICTIM.value, ASNs.ATTACKER.value]}
@@ -37,8 +37,12 @@ def test_hidden_hijack_bgp(tmp_path):
                           subprefix_as_path=(2, 3, ASNs.ATTACKER.value)),
         3: HijackLocalRib(prefix_as_path=(3, 2, ASNs.VICTIM.value),
                           subprefix_as_path=(3, ASNs.ATTACKER.value)),
-        ASNs.VICTIM.value: HijackLocalRib(prefix_as_path=(ASNs.VICTIM.value,)),
-        ASNs.ATTACKER.value: HijackLocalRib(subprefix_as_path=(ASNs.VICTIM.value,)),
+
+        ASNs.VICTIM.value: HijackLocalRib(prefix_as_path=(ASNs.VICTIM.value,),
+            subprefix_as_path=(ASNs.VICTIM.value, 2, 3, ASNs.ATTACKER.value,)),
+
+        ASNs.ATTACKER.value: HijackLocalRib(subprefix_as_path=(ASNs.ATTACKER.value,),
+            prefix_as_path=(ASNs.ATTACKER.value, 3, 2, ASNs.VICTIM.value,)),
     }
 
     run_example(tmp_path,

@@ -4,6 +4,9 @@ from .relationships import Relationships
 class Announcement:
     """MRT Announcement"""
 
+    __slots__ = ["prefix", "timestamp", "as_path", "roa_validity",
+                 "recv_relationship", "priority"]
+
     def __init__(self,
                  prefix=None,
                  timestamp=None,
@@ -22,8 +25,8 @@ class Announcement:
 
     def __lt__(self, other):
         assert isinstance(other, Announcement)
-        assert isinstance(self.priority, int)
-        assert isinstance(other.priority, int)
+        assert isinstance(self.priority, int), self.priority
+        assert isinstance(other.priority, int), other.priority
 
         return self.priority < other.priority
         
@@ -36,13 +39,9 @@ class Announcement:
 
         as_dict[self.origin].local_rib[self.prefix] = self
 
-    def __eq__(self, other):
-        """Checks if two announcements are equal"""
-
-        if isinstance(other, Announcement):
-            return vars(self) == vars(other)
-        raise NotImplementedError
-
     @property
     def origin(self):
         return self.as_path[-1]
+
+    def __str__(self):
+        return f"{self.prefix} {self.origin} {self.as_path}"

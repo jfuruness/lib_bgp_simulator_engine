@@ -1,8 +1,14 @@
+from .incoming_anns import IncomingAnns
 from .local_rib import LocalRib
 from .relationships import Relationships
 
 class AS:
     """Autonomous System class. Contains attributes of an AS"""
+
+    __slots__ = ["asn", "rank", Relationships.PEERS.name.lower(),
+                 Relationships.CUSTOMERS.name.lower(),
+                 Relationships.PROVIDERS.name.lower(),
+                 "ixp", "local_rib", "incoming_anns"]
 
     def __init__(self,
                  asn: int = None,
@@ -26,9 +32,12 @@ class AS:
         # Caida hand selects a few IXPs
         self.ixp: bool = ixp
         self.local_rib = LocalRib()
-        self.incoming_ann = IncomingAnn()
-        assert hasattr(self, "process_announcements")
-        assert hasattr(self, "send_announcements")
+        self.incoming_anns = IncomingAnns()
+
+        assert hasattr(self, "propogate_to_peers")
+        assert hasattr(self, "propogate_to_customers")
+        assert hasattr(self, "propogate_to_providers")
+        assert hasattr(self, "process_incoming_anns")
 
     def __lt__(self, other):
         """Just for sorting when getting the ranks"""

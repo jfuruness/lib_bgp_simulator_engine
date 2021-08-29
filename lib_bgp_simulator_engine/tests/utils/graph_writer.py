@@ -14,6 +14,10 @@ def write_graph(peers, customer_providers, as_types, path_obj):
 
     # Dict of asn: as_obj
     as_dict = _generate_as_dict(peers, customer_providers, as_types)
+    # Later change to logging
+    print("asn, peers, customers, providers")
+    for asn_obj in as_dict.values():
+        print(asn_obj.asn, asn_obj.peer_asns, asn_obj.customer_asns, asn_obj.provider_asns)
     _assign_ranks(as_dict)
     with path_obj.open("w") as f:
         fieldnames = vars(list(as_dict.values())[0]).keys()

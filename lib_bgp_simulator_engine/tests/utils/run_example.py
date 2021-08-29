@@ -17,7 +17,14 @@ def run_example(tmp_path,
 
     path = tmp_path / "example.tsv"
     write_graph(peers, customer_providers, as_types, path)
+    print("populating engine")
     engine = SimulatorEngine(str(path), as_classes_dict)
+    print("Running engine")
     engine.run(announcements, clear=False)
+    input("Done")
     for as_obj in engine:
-        assert as_obj.local_rib.assert_eq(local_ribs[as_obj.asn])
+        print("ASN:", as_obj.asn)
+        for prefix, ann in as_obj.local_rib.items():
+            print(ann)
+        if local_ribs:
+            as_obj.local_rib.assert_eq(local_ribs[as_obj.asn])
