@@ -1,3 +1,6 @@
+from .relationships import Relationships
+
+
 class Announcement:
     """MRT Announcement"""
 
@@ -13,7 +16,17 @@ class Announcement:
         # Tuples are faster
         assert isinstance(self.as_path, tuple)
         self.roa_validity = roa_validity
+        # Where the announcement came from
+        self.recv_relationship = Relationships.SEEDED
+        self.priority = None
 
+    def __lt__(self, other):
+        assert isinstance(other, Announcement)
+        assert isinstance(self.priority, int)
+        assert isinstance(other.priority, int)
+
+        return self.priority < other.priority
+        
     def seed(self, as_dict):
         """Seeds announcement at the proper AS
 

@@ -1,4 +1,5 @@
 from .local_rib import LocalRib
+from .relationships import Relationships
 
 class AS:
     """Autonomous System class. Contains attributes of an AS"""
@@ -15,14 +16,17 @@ class AS:
         self.asn: int = asn
         # Rank of that AS. Not to be confused with AS rank
         self.rank: int = rank
-        self.peers: list = peer_asns
-        self.customers: list = customer_asns
-        self.providers: list = provider_asns
+        # Note that these must be the same names. Propogation function
+        # in the BGP AS depend on it
+        setattr(self, Relationships.PEERS.name.lower(), peer_asns)
+        setattr(self, Relationships.CUSTOMERS.name.lower(), customer_asns)
+        setattr(self, Relationships.PROVIDERS.name.lower(), provider_asns)
         # Caida says that there is a known clique at the top of the AS graph
         self.input_clique: bool = input_clique
         # Caida hand selects a few IXPs
         self.ixp: bool = ixp
         self.local_rib = LocalRib()
+        self.incoming_ann = IncomingAnn()
         assert hasattr(self, "process_announcements")
         assert hasattr(self, "send_announcements")
 

@@ -35,7 +35,23 @@ class SimulatorEngine(BGPDAG):
         """Propogates announcements"""
 
         print("fill in prop func")
-        pass
+        for rank in self.ranks:
+            for as_obj in rank:
+                as_obj.propogate(Relationships.PROVIDERS)
+            for as_obj in rank:
+                as_obj.process_incoming_anns(Relationships.CUSTOMERS)
+            for as_obj in rank:
+                as_obj.propogate(Relationships.PEERS)
+            for as_obj in rank:
+                as_obj.process_incoming_anns(Relationships.PEERS)
+
+        for i, rank in enumerate(reversed(self.ranks)):
+            # There are no incomming Anns at the top
+            if i > 0:
+                for as_obj in rank:
+                    as_obj.process_incoming_anns(Relationships.PROVIDERS)
+            for as_obj in rank:
+                as_obj.propogate_to_customers(Relationships.CUSTOMERS)
 
     def _save(self):
         """Saves DAG"""
