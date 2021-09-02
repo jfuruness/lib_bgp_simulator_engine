@@ -1,11 +1,17 @@
+from lib_caida_collector import BGPDAG
+
 from .announcement import Announcement
 from .bgp_as import BGPAS
-from .bgp_dag import BGPDAG
 from .relationships import Relationships
 
 
 class SimulatorEngine(BGPDAG):
     __slots__ = []
+
+    def __init__(self, *args, BaseASCls=BGPAS, **kwargs):
+        super(SimulatorEngine, self).__init__(*args,
+                                              BaseASCls=BaseASCls,
+                                              **kwargs)
 
     def run(self, announcements, save_path=None, clear=True):
         """Propogates announcements"""

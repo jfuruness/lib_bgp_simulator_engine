@@ -90,5 +90,6 @@ class BGPAS(AS):
         ann.recv_relationship = recv_relationship
         # Relationship
         # Path length
-        # 100 - is to invest the as_path so that longer paths are worse
+        # 100 - is to invert the as_path so that longer paths are worse
+        assert len(as_path) < 100
         ann.priority = recv_relationship.value * 100 + (100 - len(ann.as_path))
